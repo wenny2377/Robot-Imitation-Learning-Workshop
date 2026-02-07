@@ -30,10 +30,14 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/62180aec-9c30-453a-a89e-f3ff85611e8f" width="600" alt="URDF Mimic Joint Demo">
+  <img src="https://github.com/user-attachments/assets/d534302a-6376-4238-a5e9-9566d41fb696" width="600" alt="URDF Mimic Joint Demo">
   <br>
   <i>圖二：TM5S-900 與 Robotiq 2F-85 運動學同步展示 (Mimic Joint Verification)</i>
 </p>
+
+
+
+
 
 
 
