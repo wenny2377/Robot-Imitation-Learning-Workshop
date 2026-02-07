@@ -1,0 +1,366 @@
+<?xml version="1.0"?>
+<robot name="tm5s_robotiq85">
+
+  <!-- ========================================================= -->
+  <!--                         TM5s                              -->
+  <!-- ========================================================= -->
+
+  <link name="base"/>
+
+  <link name="link_0">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-base.obj"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-base_c.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.001" iyy="0.001" izz="0.001"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="base_fixed_joint" type="fixed">
+    <parent link="base"/>
+    <child link="link_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ========== J1 ========== -->
+  <link name="link_1">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-j1.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-j1_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="4.32"/>
+      <inertia ixx="0.008439" iyy="0.013794" izz="0.014241"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_1" type="revolute">
+    <parent link="link_0"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.1484" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="157" velocity="3.665"/>
+  </joint>
+
+  <!-- ========== J2 ========== -->
+  <link name="link_2">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-a1.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-a1_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="9.796"/>
+      <inertia ixx="0.029227" iyy="0.406911" izz="0.418508"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_2" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0 0 0" rpy="-1.5708 -1.5708 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="157" velocity="3.665"/>
+  </joint>
+
+  <!-- ========== J3 ========== -->
+  <link name="link_3">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-a2.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-a2_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="2.778"/>
+      <inertia ixx="0.004173" iyy="0.06191" izz="0.063319"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_3" type="revolute">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0.429 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.757" upper="2.757" effort="157" velocity="3.665"/>
+  </joint>
+
+  <!-- ========== J4 ========== -->
+  <link name="link_4">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-j5.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-j5_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="1.77"/>
+      <inertia ixx="0.002046" iyy="0.003172" izz="0.003479"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_4" type="revolute">
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <origin xyz="0.386 0 -0.1478" rpy="0 0 1.5708"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="54" velocity="3.927"/>
+  </joint>
+
+  <!-- ========== J5 ========== -->
+  <link name="link_5">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-j6.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-j6_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="1.77"/>
+      <inertia ixx="0.002046" iyy="0.003172" izz="0.003479"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_5" type="revolute">
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <origin xyz="0 -0.1315 0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="54" velocity="3.927"/>
+  </joint>
+
+  <!-- ========== J6 ========== -->
+  <link name="link_6">
+    <visual><geometry><mesh filename="package://tm5q/meshes/tm5s/visual/tm5s-io.obj"/></geometry></visual>
+    <collision><geometry><mesh filename="package://tm5q/meshes/tm5s/collision/tm5s-io_c.stl"/></geometry></collision>
+    <inertial>
+      <mass value="0.72"/>
+      <inertia ixx="0.000703" iyy="0.001711" izz="0.001854"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_6" type="revolute">
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <origin xyz="0 -0.13495 0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="34" velocity="7.85"/>
+  </joint>
+
+ <!-- ================= FLANGE ================= -->
+  <link name="flange"/>
+  <joint name="flange_fixed_joint" type="fixed">
+    <parent link="link_6"/>
+    <child link="flange"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ================= ROBOTIQ 2F-85 ================= -->
+  
+  <!-- Base link -->
+
+
+  <link name="robotiq_85_base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/robotiq_base.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/robotiq_base.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.663"/>
+      <inertia ixx="0.000516" iyy="0.000588" izz="0.000395"/>
+      <origin xyz="0 2.274e-05 0.03232288"/>
+    </inertial>
+  </link>
+
+  <joint name="tm5s_to_robotiq_85" type="fixed">
+    <parent link="link_6"/>
+    <child link="robotiq_85_base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="robotiq_85_left_knuckle_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/left_knuckle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/left_knuckle.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_left_knuckle_joint" type="revolute">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_left_knuckle_link"/>
+    <origin xyz="0.0306 0 0.0549"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.0" upper="0.8" effort="50" velocity="1.0"/>
+  </joint>
+
+  <link name="robotiq_85_left_inner_knuckle_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/left_inner_knuckle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/left_inner_knuckle.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_left_inner_knuckle_joint" type="revolute">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_left_inner_knuckle_link"/>
+    <origin xyz="0.0127 0 0.06142" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.0" upper="1.2" effort="20" velocity="1.0"/>
+    <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0" offset="0"/>
+  </joint>
+
+  <link name="robotiq_85_left_finger_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/left_finger.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/left_finger.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.0426"/>
+      <inertia ixx="1.38e-5" iyy="1.18e-5" izz="5.2e-6"/>
+    </inertial>
+  </link>
+
+  <joint name="robotiq_85_left_finger_joint" type="revolute">
+    <parent link="robotiq_85_left_knuckle_link"/>
+    <child link="robotiq_85_left_finger_link"/>
+    <origin xyz="0.03152616 0 -0.00376347"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.0" upper="1.0" effort="20" velocity="1.0"/>
+  </joint>
+
+  <link name="robotiq_85_left_finger_tip_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/left_finger_tip.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/left_finger_tip.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_left_finger_tip_joint" type="revolute">
+    <parent link="robotiq_85_left_finger_link"/>
+    <child link="robotiq_85_left_finger_tip_link"/>
+    <origin xyz="0.00563134 0 0.04718515"/>
+    <axis xyz="0 -1 0"/>
+    <mimic joint="robotiq_85_left_knuckle_joint" multiplier="-1.0"/>
+    <limit lower="-1.0" upper="1.0" effort="0" velocity="0"/>
+  </joint>
+
+  <link name="robotiq_85_right_knuckle_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/right_knuckle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/right_knuckle.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_right_knuckle_joint" type="revolute">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_right_knuckle_link"/>
+    <origin xyz="-0.0306 0 0.0549"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-0.8" upper="0.0" effort="50" velocity="1.0"/>
+  </joint>
+
+  <link name="robotiq_85_right_inner_knuckle_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/right_inner_knuckle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/right_inner_knuckle.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_right_inner_knuckle_joint" type="revolute">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_right_inner_knuckle_link"/>
+    <origin xyz="-0.0127 0 0.06142" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-1.2" upper="0.0" effort="20" velocity="1.0"/>
+    <mimic joint="robotiq_85_right_knuckle_joint" multiplier="1.0" offset="0"/>
+  </joint>
+
+  <link name="robotiq_85_right_finger_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/right_finger.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/right_finger.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.0426"/>
+      <inertia ixx="1.38e-5" iyy="1.18e-5" izz="5.2e-6"/>
+    </inertial>
+  </link>
+
+  <joint name="robotiq_85_right_finger_joint" type="revolute">
+    <parent link="robotiq_85_right_knuckle_link"/>
+    <child link="robotiq_85_right_finger_link"/>
+    <origin xyz="-0.03152616 0 -0.00376347"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-1.0" upper="0.0" effort="20" velocity="1.0"/>
+    
+  </joint>
+
+  <link name="robotiq_85_right_finger_tip_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/visual/2f_85/right_finger_tip.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://tm5q/meshes/collision/2f_85/right_finger_tip.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_85_right_finger_tip_joint" type="revolute">
+    <parent link="robotiq_85_right_finger_link"/>
+    <child link="robotiq_85_right_finger_tip_link"/>
+    <origin xyz="-0.00563134 0 0.04718515" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="0" velocity="0"/>
+    <mimic joint="robotiq_85_right_knuckle_joint" multiplier="1.0"/>
+  </joint>
+
+</robot>
