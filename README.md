@@ -44,6 +44,27 @@
 - **關鍵工具:** PyTorch, ROS2, Unity / Isaac Sim
 - **數據格式:** 結構化軌跡數據，便於未來與 **LLM 高階規劃 (High-level planning)** 整合。
 
+
+---
+
+## 🔧 技術深研：機器人建模與運動學 (Robot Modeling & Kinematics)
+
+在整合 **Techman TM5S-900** 與 **Robotiq 2F-85** 的過程中，我針對複雜的平行連桿機構進行了優化處理：
+
+### 1. 閉環連桿問題解決 (Solving Closed-loop Kinematics)
+* **技術挑戰：** 由於 URDF 原生僅支援樹狀拓樸 (Tree Topology)，無法直接定義 Robotiq 夾爪的閉環平行連桿，導致模擬時會出現末端脫離（脫臼）現象。
+* **解決方案：** * **Mimic Joints:** 透過實作 `<mimic>` 標籤（如下方代碼），讓多個連桿節點同步主動關節的位移。
+    * **Physics Constraints:** 在模擬器層級（如 Unity/Isaac Sim）補足物理約束，確保運動學路徑的連續性。
+
+#### **URDF 實作片段 (Mimic Joint Snippet):**
+```xml
+<joint name="robotiq_85_left_inner_knuckle_joint" type="revolute">
+  <parent link="robotiq_85_base_link"/>
+  <child link="robotiq_85_left_inner_knuckle_link"/>
+  <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0" offset="0"/>
+</joint>
+
+```
 ---
 
 ## 📈 實作進度 (Milestones)
