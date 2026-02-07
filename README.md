@@ -29,6 +29,15 @@
   <i>圖一：於工研院進行 Techman 機器人針對透明目標物的精準夾取數據採集</i>
 </p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/62180aec-9c30-453a-a89e-f3ff85611e8f" width="600" alt="URDF Mimic Joint Demo">
+  <br>
+  <i>圖二：TM5S-900 與 Robotiq 2F-85 運動學同步展示 (Mimic Joint Verification)</i>
+</p>
+
+
+
+
 ### 2. 交大機器人學習工作坊 (NYCU Workshop 2026)
 本專案的核心目標是在 **交大 329 教室** 的實作課程中，完成一套完整的模仿學習流程：
 * **遠端操作 (Teleoperation):** 建立人機介面，採集專家示範數據。
