@@ -141,4 +141,41 @@ https://github.com/user-attachments/assets/4690878b-054e-4f42-8d15-6633e2d1879b
 在未來進行家事機器人（如「挖取物品」）的訓練時，我會更注重動作的「節奏感」。例如，接近物體時的減速過程必須在多組 Demo 中保持邏輯一致，這樣模型才能學會從「高速接近」切換到「精準操作」的時間序列特徵 。
 
 
+這反而更有價值！在 GitHub 紀錄**「與 TA 的問答與反思」**能體現你具備**批判性思考（Critical Thinking）**與**主動探討底層邏輯**的能力，這正是德國研究型大學（如 RWTH）最欣賞的特質。
+
+你可以將這些問答轉化為 README 中的 **"Q&A and Critical Thinking"** 章節。以下是幫你彙整好的內容，將你的提問與觀察轉化為專業的技術論述：
+
+---
+
+## 🧐 實作問答與深度反思 (Q&A and Critical Thinking)
+
+
+## 📈 系統架構圖 (System Architecture)
+
+```mermaid
+graph TD
+    %% 現實數據採集層
+    subgraph Real_World ["Real-World Data Collection (UMI)"]
+        A[GoPro 13 + UMI Gripper] -->|2.7K 120fps Video| B(UMI Pipeline)
+        B -->|SLAM & ArUco Detection| C{Dataset Trajectory}
+    end
+
+    %% 模擬與資料增廣層
+    subgraph Simulation ["Digital Twin Simulation (Isaac Sim)"]
+        D[Franka Panda + UMI Gripper USD] --> E[Sim Replay]
+        C -->|Trajectory Mapping| E
+        F[Keyboard Teleop W/A/S/D] -->|Data Augmentation| G[Simulated Episodes]
+        E --> G
+    end
+
+    %% 模型訓練層
+    subgraph Learning ["Policy Learning (Diffusion Policy)"]
+        G -->|Action Chunking| H[Diffusion Policy U-Net]
+        I[Historical Frames Horizon] -->|Observation Input| H
+        H -->|Predicted Action Sequence| J[Autonomous Execution]
+    end
+
+    %% 關聯與回饋
+    J -->|Safety Evaluation| D
+```
 
