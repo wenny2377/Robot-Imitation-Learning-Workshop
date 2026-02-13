@@ -1,3 +1,6 @@
+2026/01/19-23 ITRI
+2026/02/11-12 NYCU
+
 https://github.com/HCIS-Lab/physical-ai-umi/tree/dev
 
 <img width="1536" height="614" alt="image" src="https://github.com/user-attachments/assets/04527829-e044-4015-b2af-d530f3fa63ed" />
