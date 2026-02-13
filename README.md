@@ -1,5 +1,8 @@
 https://github.com/HCIS-Lab/physical-ai-umi/tree/dev
 
+<img width="1536" height="614" alt="image" src="https://github.com/user-attachments/assets/04527829-e044-4015-b2af-d530f3fa63ed" />
+
+
 # Robot Imitation Learning: From Teleoperation to Autonomous Policy
 # 機器人模仿學習實戰：從遠端操作到自主策略執行
 
