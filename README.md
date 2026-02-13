@@ -66,19 +66,12 @@ https://github.com/user-attachments/assets/4690878b-054e-4f42-8d15-6633e2d1879b
 
 為了確保模型能正確學習動作，數據採集須嚴格遵守以下規格 ：
 
-* 
 **影像規格**：GoPro 須設定為 2.7K 120fps、4:3 魚眼視角 。
 
-
-* 
 **標準流程**：遵循  順序 。
-
-
-* 
+ 
 **環境控管**：校準時需移除多餘標籤（Tags），並在完成後以黑布覆蓋主要校準碼（Tag #13）以避免干擾 。
 
-
-* 
 **採集策略**：物體須置於鏡頭中心，初始影格須完整捕捉 ArUco tags，且相機需接近鳥瞰視角（BEV） 。
 
 
@@ -86,21 +79,12 @@ https://github.com/user-attachments/assets/4690878b-054e-4f42-8d15-6633e2d1879b
 ### 2. UMI 數據管線 (Pipeline)
 
 透過 `umi-pipeline` 處理原始影片，生成機器人運動軌跡數據 ：
-
-* 
+ 
 **關鍵步驟**：包含提取 IMU 數據、建立 SLAM 地圖、偵測 ArUco 標籤及計算物體位姿（Object Pose） 。
 
-
-* 
 **視覺化檢查**：利用 Jupyter Lab 的 `dataset_visualizer.ipynb` 審核示範品質，檢查是否發生影格丟失或軌跡異常 。
 
 
-
----
-
-這兩點反思非常有深度，這正是將「學作實驗」提升到「學術研究」的關鍵轉折點。在 GitHub 上紀錄這些內容，能展現你對機器人架構（Architecture）與落地應用（Deployment）的批判性思考。
-
-以下是為你更新的 `README.md` 反思章節建議，我將這兩點轉化為更具專業性的技術探討：
 
 ---
 
