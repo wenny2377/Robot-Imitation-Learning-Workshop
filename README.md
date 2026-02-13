@@ -58,51 +58,80 @@ https://github.com/user-attachments/assets/4690878b-054e-4f42-8d15-6633e2d1879b
 
 
 
+## 🏗️ 具身智能實戰：UMI x Isaac Sim 流程
+
+本專案利用國立陽明交通大學 HCIS Lab 提供之預建環境 ，實作從現實採集到模擬訓練的完整 Physical AI 閉環。
+
+### 1. 數據採集標準 (Data Collection)
+
+為了確保模型能正確學習動作，數據採集須嚴格遵守以下規格 ：
+
+* 
+**影像規格**：GoPro 須設定為 2.7K 120fps、4:3 魚眼視角 。
+
+
+* 
+**標準流程**：遵循  順序 。
+
+
+* 
+**環境控管**：校準時需移除多餘標籤（Tags），並在完成後以黑布覆蓋主要校準碼（Tag #13）以避免干擾 。
+
+
+* 
+**採集策略**：物體須置於鏡頭中心，初始影格須完整捕捉 ArUco tags，且相機需接近鳥瞰視角（BEV） 。
 
 
 
-### 2. 交大機器人學習工作坊 (NYCU Workshop 2026)
-本專案的核心目標是在 **交大 329 教室** 的實作課程中，完成一套完整的模仿學習流程：
-* **遠端操作 (Teleoperation):** 建立人機介面，採集專家示範數據。
-- **模仿學習 (Imitation Learning):** 利用行為複製 (Behavior Cloning) 演算法訓練神經網路。
-- **自主執行 (Autonomous Execution):** 在虛擬模擬環境中驗證訓練結果，縮短 Sim-to-Real 的落差。
+### 2. UMI 數據管線 (Pipeline)
+
+透過 `umi-pipeline` 處理原始影片，生成機器人運動軌跡數據 ：
+
+* 
+**關鍵步驟**：包含提取 IMU 數據、建立 SLAM 地圖、偵測 ArUco 標籤及計算物體位姿（Object Pose） 。
+
+
+* 
+**視覺化檢查**：利用 Jupyter Lab 的 `dataset_visualizer.ipynb` 審核示範品質，檢查是否發生影格丟失或軌跡異常 。
+
+
 
 ---
 
-## ⚙️ 技術細節 (Technical Specs)
+這兩點反思非常有深度，這正是將「學作實驗」提升到「學術研究」的關鍵轉折點。在 GitHub 上紀錄這些內容，能展現你對機器人架構（Architecture）與落地應用（Deployment）的批判性思考。
 
-- **核心演算法:** Behavior Cloning (BC)
-- **開發語言:** Python, C# (Unity 串接預留)
-- **關鍵工具:** PyTorch, ROS2, Unity / Isaac Sim
-- **數據格式:** 結構化軌跡數據，便於未來與 **LLM 高階規劃 (High-level planning)** 整合。
-
+以下是為你更新的 `README.md` 反思章節建議，我將這兩點轉化為更具專業性的技術探討：
 
 ---
 
-## 🔧 技術深研：機器人建模與運動學 (Robot Modeling & Kinematics)
+## 💡 實作反思與架構探討 (Deep Reflections)
 
-在整合 **Techman TM5S-900** 與 **Robotiq 2F-85** 的過程中，我針對複雜的平行連桿機構進行了優化處理：
+在完成 UMI x Isaac Sim 的全流程實作後，我針對**具身智能 (Embodied AI)** 的未來實作方向整理了兩點核心反思：
 
-### 1. 閉環連桿問題解決 (Solving Closed-loop Kinematics)
-* **技術挑戰：** 由於 URDF 原生僅支援樹狀拓樸 (Tree Topology)，無法直接定義 Robotiq 夾爪的閉環平行連桿，導致模擬時會出現末端脫離（脫臼）現象。
-* **解決方案：** * **Mimic Joints:** 透過實作 `<mimic>` 標籤（如下方代碼），讓多個連桿節點同步主動關節的位移。
-    * **Physics Constraints:** 在模擬器層級（如 Unity/Isaac Sim）補足物理約束，確保運動學路徑的連續性。
+### 1. 運動軌跡的層級化整合 (Hierarchical Approach & Motion Planning)
 
-#### **URDF 實作片段 (Mimic Joint Snippet):**
-```xml
-<joint name="robotiq_85_left_inner_knuckle_joint" type="revolute">
-  <parent link="robotiq_85_base_link"/>
-  <child link="robotiq_85_left_inner_knuckle_link"/>
-  <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0" offset="0"/>
-</joint>
+在本次實作中，我們傾向於將端到端（End-to-End）的運動軌跡全部交給模型訓練，但在實際應用中，這種做法效率不一定最高。
 
-```
----
+* 
+**層級式強化學習 (Hierarchical RL)**：應將任務拆解，高層級負責邏輯決策（如：走到桌邊），低層級負責精細操作 。
 
-## 📈 實作進度 (Milestones)
 
-- [x] **建立專業 Repo 框架 (2026/02/07)**
-- [x] **匯入工研院實務背景數據 (2026/02/07)**
-- [ ] **Day 1 (02/11):** 完成遠端操作介面與首批數據採集。
-- [ ] **Day 2 (02/12):** 完成模型訓練與小組挑戰賽 Demo。
+* **混合策略 (Hybrid Framework)**：
+* **前段導航/接近**：可以使用成熟的 **Motion Planning**（如 MoveIt 或導航演算法）負責大範圍、無障礙的位移，這部分不需要耗費大量數據訓練。
+* **後段精細操作**：僅針對「最難的部分」（例如：精準抓取目標物、避開脆弱障礙物）進行 **Imitation Learning / RL** 訓練。
+
+
+* **優點**：這種「Planning + Training」的結合能大幅降低訓練數據量需求，並提高系統在陌生環境的泛化能力。
+
+### 2. 多維度的評估標準與安全性 (Evaluation Metrics & Safety)
+
+目前的實驗多以「成功率」作為唯一指標，但作為**居家輔具機器人 (Assistive Robotics)**，評估標準必須更加多元：
+
+* **安全性 (Safety First)**：這是我論文核心關注點。例如在執行「挖取東西」或「遞送物品」時，模型不僅要達成目標，更要監控末端執行器的力道與加速度，避免碰撞使用者。
+* **穩定性指標**：除了成功次數，還需評估軌跡的**平滑度 (Smoothness)**。過度抖動的動作在現實中會造成硬體損耗，且會給予使用者（特別是長者）不安感。
+* 
+**失效模式分析 (Failure Mode Analysis)**：紀錄 88% 的錯誤來源（如數據品質 ）並分類，是為了建立更強健的自動化評估系統，而不僅僅是追求模型收斂。
+
+
+
 
