@@ -1,166 +1,82 @@
-2026/01/19-23 ITRI
-2026/02/11-12 NYCU
+# Robot-Imitation-Learning-Workshop
+### From Teleoperation to Autonomous Policy: A Practical Imitation Learning Pipeline
 
-https://github.com/HCIS-Lab/physical-ai-umi/tree/dev
+> A hands-on implementation framework built across two intensive programs:
+> ITRI collaborative robot data collection (Jan 19–23, 2026) and the NYCU Physical AI Workshop on UMI × Isaac Sim (Feb 11–12, 2026).
 
-<img width="1536" height="614" alt="image" src="https://github.com/user-attachments/assets/04527829-e044-4015-b2af-d530f3fa63ed" />
-
-https://github.com/user-attachments/assets/12332e5b-3822-4dbc-8a3d-d747a40e87df
-
-
-https://github.com/user-attachments/assets/96dbcf79-f9cf-4fc2-a633-fb94559309fb
-
-
-
-https://github.com/user-attachments/assets/a494ec30-5ae8-48f1-9711-12e8d1b825fb
-
-
-
-
-https://github.com/user-attachments/assets/74aa47d2-6628-44e2-984e-266b650fd6c2
-
-
-
-
-
-
-
-# Robot Imitation Learning: From Teleoperation to Autonomous Policy
-# 機器人模仿學習實戰：從遠端操作到自主策略執行
-
-> **結合工研院實務經驗與交大機器人學習工作坊的實作框架。**
-> A practical framework combining industrial experience from ITRI and intensive training at NYCU.
+Reference environment: [HCIS-Lab / physical-ai-umi](https://github.com/HCIS-Lab/physical-ai-umi/tree/dev)
 
 ---
 
-## 🏗️ 專案架構 (Repository Structure)
-
-- `📂 assets/`: 存放展示影片、訓練曲線以及實體機器人操作照片。
-- `📂 configs/`: 存放訓練參數與模型結構設定 (`.yaml`)，落實參數分離管理。
-- `📂 data/`: 定義機器人運動軌跡的數據格式 (如 JSON/HDF5)。
-- `📂 scripts/`: 包含遠端操作介面、數據預處理以及模仿學習訓練核心代碼。
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=flat-square&logo=python&logoColor=white)
+![Isaac Sim](https://img.shields.io/badge/Isaac_Sim-2023-76B900?style=flat-square&logo=nvidia&logoColor=white)
+![Diffusion Policy](https://img.shields.io/badge/Policy-Diffusion_Policy-7C3AED?style=flat-square)
+![ROS2](https://img.shields.io/badge/ROS2-Humble-22314E?style=flat-square&logo=ros&logoColor=white)
+![UMI](https://img.shields.io/badge/Hardware-UMI_Gripper-0467DF?style=flat-square)
 
 ---
 
-## 🛠️ 技術背景與實務經驗 (Technical Background)
+## Overview
 
-### 1. 工研院 (ITRI) 實體機器人經驗
-在進入此實作專案前，我曾在 **ITRI (工研院)** 參與協作型機器人的數據採集工作。
-* **使用設備：** Techman (TM5) 協作機器人。
-* **實作內容：** 針對物體抓取 (Pick-and-place) 任務進行軌跡紀錄，並處理視覺感測器與機器人末端夾爪的座標同步。
-* **技術心得：** 透過此實務經驗，掌握了實體機器人在執行模仿學習前，高品質專家數據採集 (Expert Demonstration) 的標準流程。
+<img src="https://github.com/user-attachments/assets/04527829-e044-4015-b2af-d530f3fa63ed" alt="Workshop Overview" width="100%"/>
+
+| Program | Date | Focus |
+|---------|------|-------|
+| **ITRI Visit** | Jan 19–23, 2026 | Physical robot data collection with Techman (TM5) collaborative arm |
+| **NYCU Workshop** | Feb 11–12, 2026 | UMI × Isaac Sim full pipeline: teleoperation → data processing → policy training |
+
+---
+
+## Repository Structure
+
+| Directory | Contents |
+|-----------|---------|
+| `configs/` | Training hyperparameters and model architecture settings (`.yaml`) |
+| `data/` | Robot trajectory data format definitions (JSON / HDF5) |
+| `scripts/` | Teleoperation interface, data preprocessing, and Diffusion Policy training pipeline |
+| `description/` | Technical notes and reflection documents |
+
+---
+
+## Part 1 — ITRI: Physical Robot Data Collection
+
+### Hardware
+
+**Techman TM5** collaborative robot arm with wrist-mounted vision sensor.
+
+### Task
+
+Pick-and-place of transparent objects — one of the most challenging scenarios for vision-based manipulation due to specular reflection and depth ambiguity.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e47479cc-deab-4622-a228-07b76f22e809" width="500" alt="ITRI Techman Robot Data Acquisition">
-  <br>
-  <i>圖一：於工研院進行 Techman 機器人針對透明目標物的精準夾取數據採集</i>
+  <img src="https://github.com/user-attachments/assets/e47479cc-deab-4622-a228-07b76f22e809" width="560" alt="ITRI Techman Robot Data Acquisition"/>
+  <br/>
+  <i>Techman TM5 data collection for transparent object grasping at ITRI</i>
 </p>
 
+### Key Practices
+
+- Recorded expert demonstration trajectories for downstream imitation learning
+- Handled coordinate synchronization between the vision sensor and end-effector gripper frame
+- Applied consistent approach trajectories to ensure demonstration quality for policy training
+
+### Demo
 
 https://github.com/user-attachments/assets/4690878b-054e-4f42-8d15-6633e2d1879b
 
-
-
-## 🏗️ 具身智能實戰：UMI x Isaac Sim 流程
-
-本專案利用國立陽明交通大學 HCIS Lab 提供之預建環境 ，實作從現實採集到模擬訓練的完整 Physical AI 閉環。
-
-### 1. 數據採集標準 (Data Collection)
-
-為了確保模型能正確學習動作，數據採集須嚴格遵守以下規格 ：
-
-**影像規格**：GoPro 須設定為 2.7K 120fps、4:3 魚眼視角 。
-
-**標準流程**：遵循  順序 。
- 
-**環境控管**：校準時需移除多餘標籤（Tags），並在完成後以黑布覆蓋主要校準碼（Tag #13）以避免干擾 。
-
-**採集策略**：物體須置於鏡頭中心，初始影格須完整捕捉 ArUco tags，且相機需接近鳥瞰視角（BEV） 。
-
-
-
-### 2. UMI 數據管線 (Pipeline)
-
-透過 `umi-pipeline` 處理原始影片，生成機器人運動軌跡數據 ：
- 
-**關鍵步驟**：包含提取 IMU 數據、建立 SLAM 地圖、偵測 ArUco 標籤及計算物體位姿（Object Pose） 。
-
-**視覺化檢查**：利用 Jupyter Lab 的 `dataset_visualizer.ipynb` 審核示範品質，檢查是否發生影格丟失或軌跡異常 。
-
-
-
 ---
 
-## 💡 實作反思與架構探討 (Deep Reflections)
+## Part 2 — NYCU Workshop: UMI × Isaac Sim Full Pipeline
 
-在完成 UMI x Isaac Sim 的全流程實作後，我針對**具身智能 (Embodied AI)** 的未來實作方向整理了兩點核心反思：
-
-### 1. 運動軌跡的層級化整合 (Hierarchical Approach & Motion Planning)
-
-在本次實作中，我們傾向於將端到端（End-to-End）的運動軌跡全部交給模型訓練，但在實際應用中，這種做法效率不一定最高。
-
-* 
-**層級式強化學習 (Hierarchical RL)**：應將任務拆解，高層級負責邏輯決策（如：走到桌邊），低層級負責精細操作 。
-
-
-* **混合策略 (Hybrid Framework)**：
-* **前段導航/接近**：可以使用成熟的 **Motion Planning**（如 MoveIt 或導航演算法）負責大範圍、無障礙的位移，這部分不需要耗費大量數據訓練。
-* **後段精細操作**：僅針對「最難的部分」（例如：精準抓取目標物、避開脆弱障礙物）進行 **Imitation Learning / RL** 訓練。
-
-
-* **優點**：這種「Planning + Training」的結合能大幅降低訓練數據量需求，並提高系統在陌生環境的泛化能力。
-
-### 2. 多維度的評估標準與安全性 (Evaluation Metrics & Safety)
-
-目前的實驗多以「成功率」作為唯一指標，但作為**居家輔具機器人 (Assistive Robotics)**，評估標準必須更加多元：
-
-* **安全性 (Safety First)**：這是我論文核心關注點。例如在執行「挖取東西」或「遞送物品」時，模型不僅要達成目標，更要監控末端執行器的力道與加速度，避免碰撞使用者。
-* **穩定性指標**：除了成功次數，還需評估軌跡的**平滑度 (Smoothness)**。過度抖動的動作在現實中會造成硬體損耗，且會給予使用者（特別是長者）不安感。
-* 
-**失效模式分析 (Failure Mode Analysis)**：紀錄 88% 的錯誤來源（如數據品質 ）並分類，是為了建立更強健的自動化評估系統，而不僅僅是追求模型收斂。
-
-這是一個非常關鍵的觀察。**Diffusion Policy** 與傳統單幀輸入的 Behavior Cloning (BC) 不同，它具有強大的**時間相干性 (Temporal Coherence)**。將「滑動窗口 (Sliding Window)」或「歷史影格」的概念放入反思，能體現你對生成式模型在機器人控制中運作機制的理解。
-
-以下是為你整理的反思內容補充，建議加入 GitHub 的 **Reflection** 章節：
-
----
-
-### 3. 基於擴散模型的時間序列特性 (Temporal Conditioning in Diffusion Policy)
-
-此次實作採用的 **Diffusion Policy** 核心特性在於它並非僅根據當前狀態 (Current State) 輸出動作，而是根據**前幾幀的歷史觀察 (Horizon)** 來預測未來一段時間的**動作序列 (Action Chunking)** 。
-
-* **歷史影格的重要性**：
-在蒐集資料時，我意識到示範動作的「連貫性」比單點準確度更重要。因為模型會參考前幾幀的資訊，如果示範中出現突兀的抖動或不自然的停頓，會干擾模型對運動趨勢的判斷 。
-
-
-* **示範動作的平滑度**：
-由於模型學習的是一個動作的分佈，高品質的數據採集需要確保示範者在進入「關鍵抓取點」前的運動路徑是平滑且可預測的。這能幫助 Diffusion Policy 更好地在推論階段 (Inference) 進行去噪 (Denoising)，生成穩定的控制信號 。
-
-
-* **數據採集的反思**：
-在未來進行家事機器人（如「挖取物品」）的訓練時，我會更注重動作的「節奏感」。例如，接近物體時的減速過程必須在多組 Demo 中保持邏輯一致，這樣模型才能學會從「高速接近」切換到「精準操作」的時間序列特徵 。
-
-
-這反而更有價值！在 GitHub 紀錄**「與 TA 的問答與反思」**能體現你具備**批判性思考（Critical Thinking）**與**主動探討底層邏輯**的能力，這正是德國研究型大學（如 RWTH）最欣賞的特質。
-
-你可以將這些問答轉化為 README 中的 **"Q&A and Critical Thinking"** 章節。以下是幫你彙整好的內容，將你的提問與觀察轉化為專業的技術論述：
-
----
-
-## 🧐 實作問答與深度反思 (Q&A and Critical Thinking)
-
-
-## 📈 系統架構圖 (System Architecture)
+### System Architecture
 
 ```mermaid
 graph TD
-    %% 現實數據採集層
     subgraph Real_World ["Real-World Data Collection (UMI)"]
         A[GoPro 13 + UMI Gripper] -->|2.7K 120fps Video| B(UMI Pipeline)
-        B -->|SLAM & ArUco Detection| C{Dataset Trajectory}
+        B -->|SLAM + ArUco Detection| C{Trajectory Dataset}
     end
 
-    %% 模擬與資料增廣層
     subgraph Simulation ["Digital Twin Simulation (Isaac Sim)"]
         D[Franka Panda + UMI Gripper USD] --> E[Sim Replay]
         C -->|Trajectory Mapping| E
@@ -168,14 +84,112 @@ graph TD
         E --> G
     end
 
-    %% 模型訓練層
     subgraph Learning ["Policy Learning (Diffusion Policy)"]
         G -->|Action Chunking| H[Diffusion Policy U-Net]
-        I[Historical Frames Horizon] -->|Observation Input| H
+        I[Historical Frames / Horizon] -->|Observation Input| H
         H -->|Predicted Action Sequence| J[Autonomous Execution]
     end
 
-    %% 關聯與回饋
     J -->|Safety Evaluation| D
 ```
 
+### Data Collection Standards
+
+**Camera setup:** GoPro 13 at 2.7K 120fps, 4:3 fisheye, bird's-eye view (BEV) angle.
+
+**Calibration:** ArUco tags must be fully visible in the initial frames; Tag #13 covered with black cloth after calibration to prevent inference-time interference.
+
+**Demonstration quality:** Objects placed at lens center; motion must be smooth and consistent across episodes — abrupt stops or jitter degrade Diffusion Policy training due to its temporal conditioning on historical frames.
+
+### Demo
+
+https://github.com/user-attachments/assets/12332e5b-3822-4dbc-8a3d-d747a40e87df
+
+https://github.com/user-attachments/assets/96dbcf79-f9cf-4fc2-a633-fb94559309fb
+
+https://github.com/user-attachments/assets/a494ec30-5ae8-48f1-9711-12e8d1b825fb
+
+https://github.com/user-attachments/assets/74aa47d2-6628-44e2-984e-266b650fd6c2
+
+### UMI Data Pipeline
+
+```
+Raw GoPro video
+  → IMU extraction
+  → SLAM map construction
+  → ArUco tag detection
+  → Object pose estimation
+  → Trajectory dataset (.hdf5)
+  → dataset_visualizer.ipynb (quality check)
+  → Diffusion Policy training
+```
+
+---
+
+## Technical Reflections
+
+### 1. Temporal Coherence in Diffusion Policy
+
+Unlike single-frame Behavior Cloning, Diffusion Policy conditions on a **sliding window of historical observations** and predicts a future **action chunk** rather than a single action. This has direct implications for data collection:
+
+- Demonstration smoothness matters more than point accuracy — the model learns the *distribution* of motion, not just endpoint positions
+- Approach trajectories (deceleration phase before grasp) must be logically consistent across episodes so the model can learn the transition from high-speed approach to precise manipulation
+- Jitter or unnatural pauses in demonstrations corrupt the temporal signal the model relies on during denoising at inference time
+
+### 2. Hierarchical Strategy for Home Service Robots
+
+End-to-end learning of full trajectories is not always the most efficient approach. A hybrid framework better suits assistive robot applications:
+
+| Stage | Method | Rationale |
+|-------|--------|-----------|
+| Navigation / approach | Motion planning (MoveIt / Nav2) | Well-solved problem; no training data needed |
+| Fine manipulation | Imitation Learning / RL | High data efficiency for the hardest sub-task only |
+
+This separation reduces total data requirements and improves generalization to novel environments.
+
+### 3. Evaluation Metrics Beyond Success Rate
+
+For assistive robotics targeting elderly users, success rate alone is insufficient:
+
+- **Safety:** Monitor end-effector force and acceleration throughout execution, not only at contact
+- **Trajectory smoothness:** Erratic motion causes hardware wear and reduces user trust
+- **Failure mode analysis:** Classify error sources (data quality, environment variation, model uncertainty) to build more robust automated evaluation pipelines
+
+---
+
+## Quick Start
+
+```bash
+# Install dependencies
+pip install -r scripts/requirements.txt
+
+# Preprocess UMI demonstration data
+python scripts/preprocess_umi.py --input data/raw/ --output data/processed/
+
+# Train Diffusion Policy
+python scripts/train.py --config configs/diffusion_policy.yaml
+
+# Evaluate trained policy
+python scripts/evaluate.py --checkpoint checkpoints/latest.ckpt
+```
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Physical robot | Techman TM5 (ITRI), Franka Panda (NYCU) |
+| Data collection | UMI Gripper, GoPro 13 (2.7K 120fps) |
+| Simulation | NVIDIA Isaac Sim, USD scene format |
+| Policy learning | Diffusion Policy (U-Net backbone) |
+| Data pipeline | UMI Pipeline, SLAM, ArUco pose estimation |
+| Framework | Python 3.10, ROS2 Humble |
+
+---
+
+## Author
+
+**Hui-Hsin Huang**
+M.S. Candidate, Computer Science — National Cheng Kung University
+Email: wenny2377@gmail.com
